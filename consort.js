@@ -5,7 +5,6 @@ window.onload = function () {
 	document.getElementById("update").onclick = userUpdate;
 
 	function userLogin() {
-		alert(this.value);
 	}
 
 	function userJoinSession() {
@@ -13,10 +12,6 @@ window.onload = function () {
 	}
 
 	function userUpdate() {
-		var ajax = new XMLHttpRequest();
-		ajax.onload = returnUpdate;
-		ajax.open("POST", "Test", true);
-		ajax.send("name=yqset&sesison=99");
 	}
 
 	function returnUpdate() {
