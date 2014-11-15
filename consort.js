@@ -13,14 +13,13 @@ window.onload = function () {
 	}
 
 	function userUpdate() {
-		var ajax = new XMLHttpRequest();
-		ajax.onload = returnUpdate;
-		ajax.open("POST", "Test", true);
-		ajax.send("name=yqset&sesison=99");
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = "http://attu4.cs.washington.edu/SessionServer?name=yqset?callback=returnUpdate"
 	}
 
-	function returnUpdate() {
-		var jsonVal = JSON.parse(this.responseText);
+	function returnUpdate(data) {
+		var jsonVal = JSON.parse(data);
 		var preBlock = document.createElement("pre");
 		preBlock.innerHTML = jsonVal;
 		document.getElementById("jsonArea").append(preBlock); 
