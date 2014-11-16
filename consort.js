@@ -1,7 +1,10 @@
 window.onload = function () {
-		document.getElementById("join").onclick = userJoinSession;
+		//document.getElementById("join").onclick = userJoinSession;
+		document.getElementById("line").style.display = "none";
 		document.getElementById("bg").style.display = "none";
 		document.getElementById("fg").style.display = "none";
+		var gameData = document.getElementById("jsonArea").innerHTML;
+		returnUpdate(gameData);
 		//document.getElementById("update").onclick = userUpdate;
 }
 													
@@ -24,7 +27,9 @@ window.onload = function () {
 		alert("data is back");
 		var canvas = document.getElementById("bg");
 		var fg = document.getElementById("fg");
-		var jsonObj = JSON.parse(data);
+		var line = document.getElementById("line");
+		console.log(String(data));
+		var jsonObj = JSON.parse(String(data));
 		var width = parseFloat(jsonObj.Width) * _HEIGHT;
 		var height = parseFloat(jsonObj.Height) * _WIDTH;
 
@@ -36,6 +41,10 @@ window.onload = function () {
 		fg.height = Math.round(height) + 200;
 		fg.style.display = "initial";		
 
+		line.width = Math.round(width) + 200;
+		line.height = Math.round(height) + 200;
+		line.style.display = "initial";		
+		
 		var idLocaleMap = new Object();
 		console.log(jsonObj.Graph.Nodes);
 		for (var i = 0; i < jsonObj.Graph.Nodes.length; i++) {
@@ -44,8 +53,9 @@ window.onload = function () {
 
 		var draw = canvas.getContext("2d");
 		var typeText = fg.getContext("2d");
-		draw.strokeStyle = "#000";
-		draw.lineWidth = 0.1;
+		var drawLine = line.getContext("2d");
+		drawLine.strokeStyle = "#000";
+		drawLine.lineWidth = 0.1;
 		for (var i = 0; i < jsonObj.Graph.Nodes.length; i++) {
 			var temp = jsonObj.Graph.Nodes[i];
 			var node_x = Math.round(parseFloat(temp.X) * _WIDTH);
@@ -54,14 +64,11 @@ window.onload = function () {
 				var neigh = temp.Neighbors[j];
 				var x = (""+idLocaleMap[neigh]).split(":")[0];
 				var y = (""+idLocaleMap[neigh]).split(":")[1];
-				console.log(idLocaleMap[neigh]);
-				console.log(x);
-				console.log(y);
 				var neigh_x = Math.round(parseFloat(x) * _WIDTH);
 				var neigh_y = Math.round(parseFloat(y) * _HEIGHT);
-				draw.moveTo(node_x + 50, node_y + 25);
-				draw.lineTo(neigh_x + 50, neigh_y + 25);
-				draw.stroke();
+				drawLine.moveTo(node_x + 50, node_y + 25);
+				drawLine.lineTo(neigh_x + 50, neigh_y + 25);
+				drawLine.stroke();
 			}
 			draw.fillStyle = "#3c0";
 			draw.rect(node_x, node_y, 100, 50);
@@ -69,11 +76,10 @@ window.onload = function () {
 
 			typeText.fillStyle = "red";
 			typeText.font = "12pt Arial";
-			console.log(temp.Data);
-			if (temp.Known == 'True') {
+			if (temp.Known) {
 				typeText.fillText(temp.Data, node_x + 5, node_y + 30);
 			} else {
-				var stars = ("" + temp.Data).length * "*";
+				var stars = "*".repeat(("" + temp.Data).length);
 				typeText.fillText(stars, node_x + 5, node_y + 30);
 			}
 		}
@@ -89,4 +95,8 @@ function send(url, parameter, callbackMethod) {
 		string += "callback=" + callbackMethod;
 		script.src = string;
 		document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+String.prototype.repeat = function(n) {
+	return new Array(n + 1).join(this);
 }

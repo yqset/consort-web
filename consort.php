@@ -16,12 +16,12 @@ $sessions = json_decode($json, true);
 <html>
 <head>
 	<title>Consort</title>
-	<script type="application/javascript" src="consort.js"></script>
 	<link rel="stylesheet" type="text/css" href="consort.css" />
 </head>
 <body>
 	<div id="jsonArea">
 	</div>
+	<form action="consort-game.php" method="POST">
 <?php
 	for ($i = 0; $i < count($sessions); $i++) { 
 		if ($i == count($sessions) - 1) {?>
@@ -32,13 +32,12 @@ $sessions = json_decode($json, true);
 		}
 	}
 ?>
-	<input type="hidden" id="user" value="<?= $user_name ?>" />
-	<button id="join">Join</button>
+	<input type="hidden" name="user" value="<?= $user_name ?>" />
+		<input type="submit" value="Join">
+	</form>
 	<br />
 	<form action="logout.php">
 		<input type="submit" value="Log out">
 	</form>
-	<canvas id="bg"></canvas>
-	<canvas id="fg"></canvas>
 </body>
 </html>
