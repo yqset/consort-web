@@ -70,8 +70,12 @@ window.onload = function () {
 			typeText.fillStyle = "red";
 			typeText.font = "12pt Arial";
 			console.log(temp.Data);
-			typeText.fillText(temp.Data, node_x + 5, node_y + 30);
-
+			if (temp.Known == 'True') {
+				typeText.fillText(temp.Data, node_x + 5, node_y + 30);
+			} else {
+				var stars = ("" + temp.Data).length * "*";
+				typeText.fillText(stars, node_x + 5, node_y + 30);
+			}
 		}
 	}
 
