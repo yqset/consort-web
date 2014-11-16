@@ -3,8 +3,14 @@ window.onload = function () {
 	document.getElementById("login").onclick = userLogin;
 	document.getElementById("session").onclick = userJoinSession;
 	document.getElementById("update").onclick = userUpdate;
-
+}
 	function userLogin() {
+		var user_name = document.getElementsByName("name")[0].value;
+		var data = new Object;
+		data.user = user_name;
+		data.platform = "browser";
+		send("http://attu4.cs.washington.edu:33333/SessionServer", data, "returnUpdate");
+	
 	}
 
 	function userJoinSession() {
@@ -12,18 +18,24 @@ window.onload = function () {
 	}
 
 	function userUpdate() {
-<<<<<<< HEAD
-		var script = document.createElement("script");
-		script.type = "text/javascript";
-		script.src = "http://attu4.cs.washington.edu/SessionServer?name=yqset?callback=returnUpdate"
-=======
->>>>>>> c218e975d6dfc132343318771797ed2d9c63dea7
 	}
 
 	function returnUpdate(data) {
+		alert(data);
 		var jsonVal = JSON.parse(data);
 		var preBlock = document.createElement("pre");
 		preBlock.innerHTML = jsonVal;
-		document.getElementById("jsonArea").append(preBlock); 
+		document.getElementById("jsonArea").appendChild(preBlock); 
 	}
+
+function send(url, parameter, callbackMethod) {
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		var string = url + "?";
+		for (var key in parameter) {
+			string += key + "=" + parameter[key] + "&";
+		}
+		string += "callback=" + callbackMethod;
+		script.src = string;
+		document.getElementsByTagName("head")[0].appendChild(script);
 }
