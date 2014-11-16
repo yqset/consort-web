@@ -1,0 +1,13 @@
+canvas {
+	border:2px solid black;
+}
+
+#bg {
+	position: absolute;
+	z-index: 0;
+}
+
+#fg {
+	position:absolute;
+	z-index:1;
+}

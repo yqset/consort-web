@@ -17,6 +17,7 @@ $sessions = json_decode($json, true);
 <head>
 	<title>Consort</title>
 	<script type="application/javascript" src="consort.js"></script>
+	<link rel="stylesheet" type="text/css" href="consort.css" />
 </head>
 <body>
 	<div id="jsonArea">
@@ -37,5 +38,7 @@ $sessions = json_decode($json, true);
 	<form action="logout.php">
 		<input type="submit" value="Log out">
 	</form>
+	<canvas id="bg"></canvas>
+	<canvas id="fg"></canvas>
 </body>
 </html>
