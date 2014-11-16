@@ -1,15 +1,16 @@
 window.onload = function () {
 		alert("Check");
 		document.getElementById("join").onclick = userJoinSession;
-		document.getElementById("update").onclick = userUpdate;
+		//document.getElementById("update").onclick = userUpdate;
 }
 													
 
 	function userJoinSession() {
 		var data = new Object();
+		data.platform = "browser";
 		data.user = document.getElementById("user").value;
 		data.session = document.querySelector('input[name="session"]:checked').value;
-		send("http://attu4.cs.washington.edu:33333/GameServer", data, returnUpdate);
+		send("http://attu4.cs.washington.edu:33333/GameServer", data, 'returnUpdate');
 	}
 
 	function userUpdate() {
@@ -19,7 +20,7 @@ window.onload = function () {
 		alert("data is back");
 		var jsonVal = JSON.parse(data);
 		var preBlock = document.createElement("pre");
-		preBlock.innerHTML = jsonVal;
+		preBlock.innerHTML = data;
 		document.getElementById("jsonArea").appendChild(preBlock); 
 	}
 
