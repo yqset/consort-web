@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <?php
-if (isset($_POST["user"]) || trim($_POST["user"]) == "") {
-	header("index.html");
+if (!isset($_POST["user"]) || trim($_POST["user"]) == "") {
+	header('Location: index.html');
 	die();
 }
-
-$req = new HttpRequest('http://attu4.cs.washington.edu:33333/SessionServer', HttpRequest::METH_POST);
-$req -> addPostFields(array('user' => '$_POST["user"]', 'platform' => 'browser'));
-
+$req = curl_init('http://attu4.cs.washington.edu:33333/SessionServer');
+curl_setopt( $req, CURLOPT_POSTFIELDS, array('user' => $_POST["user"], 'platform' => 'browser'));
+curl_setopt( $req, CURLOPT_RETURNTRANSFER, true);
+$json = curl_exec($req);
+curl_close($req);
+$sessions = json_decode($json, true);
 ?>
 <html>
 <head>
@@ -15,11 +17,19 @@ $req -> addPostFields(array('user' => '$_POST["user"]', 'platform' => 'browser')
 </head>
 <body>
 <?php
-try {
-	echo $req->send()->getBody();
-} catch (HttpException $err) {
-	echo $err
-}
+	for ($i = 0; $i < count($sessions); $i++) { 
+		if ($i == count($sessions) - 1) {?>
+			<input type="radio" value="<?= $i + 1 ?>" name="session" checked="checked"/><?= $sessions[$i]?>
+	<?php } else { ?>
+			<input type="radio" value="<?= $i + 1 ?>" name="session" /><?= $sessions[$i]?>
+<?php
+		}
+	}
 ?>
+	<button id="join">Join</button>
+	<br />
+	<form action="logout.php">
+		<input type="submit" value="Log out">
+	</form>
 </body>
 </html>
