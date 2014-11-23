@@ -1,5 +1,5 @@
 window.onload = function () {
-		//document.getElementById("join").onclick = userJoinSession;
+		document.getElementById("submit").onclick = gameUpdate;
 		document.getElementById("line").style.display = "none";
 		document.getElementById("bg").style.display = "none";
 		document.getElementById("fg").style.display = "none";
@@ -9,22 +9,24 @@ window.onload = function () {
 }
 													
 
-	function userJoinSession() {
-		var data = new Object();
-		data.platform = "browser";
-		data.user = document.getElementById("user").value;
-		data.session = document.querySelector('input[name="session"]:checked').value;
+	function gameUpdate() {
+		var parameter = new Object();
+		parameter.platform = "browser";
+		parameter.user = document.getElementById("user").value;
+		parameter.data = document.getElementById("data").value; 
 		send("http://attu4.cs.washington.edu:33333/GameServer", data, 'returnUpdate');
 	}
 
 	function userUpdate() {
+		
+
 	}
 
 	function returnUpdate(data) {
 		var _HEIGHT = 80.0;
 		var _WIDTH = 50.0;
 
-		alert("data is back");
+		console.log("data is back");
 		var canvas = document.getElementById("bg");
 		var fg = document.getElementById("fg");
 		var line = document.getElementById("line");
@@ -58,29 +60,31 @@ window.onload = function () {
 		drawLine.lineWidth = 0.1;
 		for (var i = 0; i < jsonObj.Graph.Nodes.length; i++) {
 			var temp = jsonObj.Graph.Nodes[i];
-			var node_x = Math.round(parseFloat(temp.X) * _WIDTH);
-			var node_y = Math.round(parseFloat(temp.Y) * _HEIGHT);
-			for (var j = 0; j < temp.Neighbors.length; j++) {
-				var neigh = temp.Neighbors[j];
-				var x = (""+idLocaleMap[neigh]).split(":")[0];
-				var y = (""+idLocaleMap[neigh]).split(":")[1];
-				var neigh_x = Math.round(parseFloat(x) * _WIDTH);
-				var neigh_y = Math.round(parseFloat(y) * _HEIGHT);
-				drawLine.moveTo(node_x + 50, node_y + 25);
-				drawLine.lineTo(neigh_x + 50, neigh_y + 25);
-				drawLine.stroke();
-			}
-			draw.fillStyle = "#3c0";
-			draw.rect(node_x, node_y, 100, 50);
-			draw.fill();
-
-			typeText.fillStyle = "red";
-			typeText.font = "12pt Arial";
 			if (temp.Known) {
-				typeText.fillText(temp.Data, node_x + 5, node_y + 30);
-			} else {
-				var stars = "*".repeat(("" + temp.Data).length);
-				typeText.fillText(stars, node_x + 5, node_y + 30);
+				var node_x = Math.round(parseFloat(temp.X) * _WIDTH);
+				var node_y = Math.round(parseFloat(temp.Y) * _HEIGHT);
+				for (var j = 0; j < temp.Neighbors.length; j++) {
+					var neigh = temp.Neighbors[j];
+					var x = (""+idLocaleMap[neigh]).split(":")[0];
+					var y = (""+idLocaleMap[neigh]).split(":")[1];
+					var neigh_x = Math.round(parseFloat(x) * _WIDTH);
+					var neigh_y = Math.round(parseFloat(y) * _HEIGHT);
+					drawLine.moveTo(node_x + 50, node_y + 25);
+					drawLine.lineTo(neigh_x + 50, neigh_y + 25);
+					drawLine.stroke();
+				}
+				draw.fillStyle = "#3c0";
+				draw.rect(node_x, node_y, 100, 50);
+				draw.fill();
+
+				typeText.fillStyle = "red";
+				typeText.font = "12pt Arial";
+				if (temp.Known) {
+					typeText.fillText(temp.Data, node_x + 5, node_y + 30);
+				} else {
+					var stars = "*".repeat(("" + temp.Data).length);
+					typeText.fillText(stars, node_x + 5, node_y + 30);
+				}
 			}
 		}
 	}
