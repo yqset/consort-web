@@ -23,6 +23,7 @@ curl_close($req);
 	<div id="jsonArea">
 		<?= $gameData?>
 	</div>
+	<input type="hidden" id="user" value="<?= $user_name?>"/>
 	<input type="text" id="data" />
 	<button id="submit">Find!</button>
 	<form action="logout.php">
