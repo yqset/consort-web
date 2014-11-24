@@ -1,4 +1,16 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if (isset($_SESSION["user"])) {
+	if (isset($_SESSION["session"])) {
+		header('Location: consort-game.php');
+		die();
+	}
+	header('Location: consort.php');
+	die();
+}
+?>
+
 <html>
 <head>
 	<title>Consort</title>

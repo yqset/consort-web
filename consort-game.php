@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <?php
-if (!isset($_POST["user"]) || trim($_POST["user"]) == "") {
-	header('Location: index.html');
+session_start();
+if (!isset($_SESSION["user"])) {
+	header('Location: index.php');
+	die();
+} else if (!isset($_POST["session"])) {
+	header('Location: consort.php');
 	die();
 }
-$user_name = $_POST["user"];
+$user_name = $_SESSION["user"];
 $session = $_POST["session"];
+$_SESSION["session"] = $session;
 $req = curl_init('http://attu4.cs.washington.edu:33333/GameServer');
 curl_setopt( $req, CURLOPT_POSTFIELDS, array('user' => $user_name, 'platform' => 'browser', 'session' => $session));
 curl_setopt( $req, CURLOPT_RETURNTRANSFER, true);

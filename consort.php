@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <?php
-if (!isset($_POST["user"]) || trim($_POST["user"]) == "") {
-	header('Location: index.html');
-	die();
+session_start();
+if (isset($_SESSION["user"]) && isset($_SESSION["session"])) {
+	header('Location: consort-game.php');
+	die();	
+} else if (isset($_SESSION["user"])) {
+	$user_name = $_SESSION["user"];
+} else if (isset($_POST["user"]) || trim($_POST["user"]) != "") {
+	$user_name = $_POST["user"];
+	$_SESSION["user"] = $user_name;
+} else {
+	header('Location: index.php');
+	die();	
+
 }
-$user_name = $_POST["user"];
 $req = curl_init('http://attu4.cs.washington.edu:33333/SessionServer');
 curl_setopt( $req, CURLOPT_POSTFIELDS, array('user' => $user_name, 'platform' => 'browser'));
 curl_setopt( $req, CURLOPT_RETURNTRANSFER, true);
@@ -32,7 +41,6 @@ $sessions = json_decode($json, true);
 		}
 	}
 ?>
-	<input type="hidden" name="user" value="<?= $user_name ?>" />
 		<input type="submit" value="Join">
 	</form>
 	<br />
