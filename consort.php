@@ -44,7 +44,7 @@ $sessions = json_decode($json, true);
 		<input type="submit" value="Join">
 	</form>
 	<br />
-	<form action="logout.php">
+	<form id="logout" action="logout.php">
 		<input type="submit" value="Log out">
 	</form>
 </body>

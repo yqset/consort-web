@@ -1,3 +1,8 @@
+#canvases {
+	margin-left:auto;
+	margin-right:auto;
+}
+
 canvas {
 	border:2px solid black;
 }
@@ -9,6 +14,7 @@ canvas {
 #line {
 	position: absolute;
 	z-index: 0;
+	background-color: #EAEFF2;
 }
 
 #bg {
@@ -19,4 +25,34 @@ canvas {
 #fg {
 	position:absolute;
 	z-index:2;
+}
+
+#logout {
+	float:right;
+	clear:right;
+	font-family: Tahoma;
+}
+
+#logout input, #submit {
+	border:2px solid black;
+	width:60px;
+	height:60px;
+	background-color: #EAEFF2;
+	border-radius:50%;
+	box-shadow:0 6px #4D4E53;
+	margin-bottom:10px;
+}
+
+input[type='submit'], #submit {
+	font-family: Tahoma;
+}
+
+#logout input[type='submit']:hover, #submit:hover {
+	background-color: #4D4E53;
+	color: white;
+}
+
+#prompt {
+	float:right;
+	text-align:center;
 }

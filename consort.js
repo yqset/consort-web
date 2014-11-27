@@ -83,15 +83,15 @@ function gameStateSetup() {
 		var width = parseFloat(jsonObj.Width) * _HEIGHT;
 		var height = parseFloat(jsonObj.Height) * _WIDTH;
 
-		canvas.width = Math.round(width) + 200;
+		canvas.width = Math.round(width);
 		canvas.height = Math.round(height) + 200;
 		canvas.style.display = "initial";
 		
-		fg.width = Math.round(width) + 200;
+		fg.width = Math.round(width);
 		fg.height = Math.round(height) + 200;
 		fg.style.display = "initial";		
 
-		line.width = Math.round(width) + 200;
+		line.width = Math.round(width);
 		line.height = Math.round(height) + 200;
 		line.style.display = "initial";		
 		
@@ -101,7 +101,6 @@ function gameStateSetup() {
 		var drawLine = line.getContext("2d");
 		drawLine.strokeStyle = "#000";
 		drawLine.lineWidth = 0.1;
-		draw.fillStyle = "#3c0";
 		for (var i = 0; i < jsonObj.Graph.Nodes.length; i++) {
 			var temp = jsonObj.Graph.Nodes[i];
 			if (idKnownMap[temp.Id]) {
@@ -117,22 +116,18 @@ function gameStateSetup() {
 					drawLine.lineTo(neigh_x + 50, neigh_y + 25);
 					drawLine.stroke();
 					if (!idKnownMap[neigh]) {
-						draw.rect(neigh_x, neigh_y, 100, 50);
-						draw.fill();
+						drawBubble(draw, "white", neigh_x, neigh_y);
 						var stars = "*".repeat(("" + jsonObj.Mappings[neigh]).length);
-						typeText.fillText(stars, neigh_x + 5, neigh_y + 30);
+						writeTo(typeText, stars, neigh_x, neigh_y);
 					}
 				}
-				draw.rect(node_x, node_y, 100, 50);
-				draw.fill();
+				drawBubble(draw, "white", node_x, node_y);
 
-				typeText.fillStyle = "red";
-				typeText.font = "12pt Arial";
 				if (idKnownMap[temp.Id]) {
-					typeText.fillText(temp.Data, node_x + 5, node_y + 30);
+					writeTo(typeText, temp.Data, node_x, node_y);
 				} else {
 					var stars = "*".repeat(("" + temp.Data).length);
-					typeText.fillText(stars, node_x + 5, node_y + 30);
+					writeTo(stars, node_x, node_y);
 				}
 			}
 		}
@@ -154,12 +149,17 @@ String.prototype.repeat = function(n) {
 	return new Array(n + 1).join(this);
 }
 
+String.prototype.capitalize = function() {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 // Returns the Id of the found node, if not found,
 // return false.
 function isCorrect(data) {
 	var jsonObj = JSON.parse(String(gameData));
 	var tempNodes = jsonObj.Graph.Nodes;
-	var data = data.trim();
+	data = data.trim();
+	data = data.toLowerCase();
 	for (var i = 0; i < tempNodes.length; i++) {
 		if (tempNodes[i].Data == data) {
 			return tempNodes[i].Id;
@@ -183,4 +183,35 @@ function clear() {
 		draw.clearRect(0,0, canvas.width, canvas.height);
 		typeText.clearRect(0,0, canvas.width, canvas.height);
 		drawLine.clearRect(0,0, canvas.width, canvas.height);
+}
+
+// Draw a bubble with the context ctx,
+// with background color of color at centered at x and y
+function drawBubble(ctx, color, x, y) {
+	
+	ctx.beginPath();
+	ctx.moveTo(x + 50, y);
+	
+	ctx.quadraticCurveTo(x, y, x, y + 25);
+	ctx.quadraticCurveTo(x, y + 50, x + 50, y + 50);
+	ctx.quadraticCurveTo(x + 100, y + 50, x + 100, y + 25);
+	ctx.quadraticCurveTo(x + 100, y, x + 50, y);
+
+	ctx.strokeStyle = "black";
+	ctx.lineWidth = 3;
+	ctx.stroke();
+	ctx.fillStyle = color;
+	ctx.fill();
+	ctx.closePath();
+ 
+}
+
+// Print text (data)to the context ctx,
+// centered at x and y
+function writeTo(ctx, data, x, y) {
+	ctx.fillStyle = "#333333";
+	ctx.font = "11pt Tahoma";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.fillText(data.capitalize(), x + 50, y + 25);
 }

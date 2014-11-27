@@ -28,14 +28,18 @@ curl_close($req);
 	<div id="jsonArea">
 		<?= $gameData?>
 	</div>
-	<input type="hidden" id="user" value="<?= $user_name?>"/>
-	<input type="text" id="data" />
-	<button id="submit">Find!</button>
-	<form action="logout.php">
+	<div id="prompt">
+		<input type="hidden" id="user" value="<?= $user_name?>"/>
+		<input type="text" id="data" size="15" />
+		<button id="submit">Find</button>
+	</div>
+	<form id="logout" action="logout.php">
 		<input type="submit" value="Log out" />
 	</form>
-	<canvas id="line"></canvas>
-	<canvas id="bg"></canvas>
-	<canvas id="fg"></canvas>
+	<div id="canvases">
+		<canvas id="line"></canvas>
+		<canvas id="bg"></canvas>
+		<canvas id="fg"></canvas>
+	</div>
 </body>
 </html>
