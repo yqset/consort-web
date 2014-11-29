@@ -1,3 +1,4 @@
+
 var gameData;
 var idKnownMap = new Object();
 var idLocaleMap = new Object();
@@ -10,6 +11,9 @@ window.onload = function () {
 		document.getElementById("line").style.display = "none";
 		document.getElementById("bg").style.display = "none";
 		document.getElementById("fg").style.display = "none";
+		document.getElementById("data").onkeyup = function (e) {
+												 keyPressed(e)
+											 };
 		gameData = document.getElementById("jsonArea").innerHTML;
 		gameStateSetup();
 		autoUpdate();
@@ -215,3 +219,14 @@ function writeTo(ctx, data, x, y) {
 	ctx.textBaseline = "middle";
 	ctx.fillText(data.capitalize(), x + 50, y + 25);
 }
+
+function keyPressed(e) {
+	var keycode = e.keyCode? e.keyCode : e.charCode;
+	switch (keycode) {
+		case 13: // 'Enter' Pressed
+						gameUpdate();
+						break;
+		default:
+	}
+}
+
