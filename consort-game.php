@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
 if (!isset($_SESSION["user"])) {
 	header('Location: index.php');
 	die();
-} else if (!isset($_POST["session"])) {
+} else if (!isset($_SESSION["session"]) && !isset($_POST["session"])) {
 	header('Location: consort.php');
 	die();
 }
 $user_name = $_SESSION["user"];
-$session = $_POST["session"];
-$_SESSION["session"] = $session;
+if (isset($_POST["session"])){
+	$session = $_POST["session"];
+	$_SESSION["session"] = $session;
+} else {
+	$session = $_SESSION["session"];
+}
 $req = curl_init('http://attu4.cs.washington.edu:33333/GameServer');
 curl_setopt( $req, CURLOPT_POSTFIELDS, array('user' => $user_name, 'platform' => 'browser', 'session' => $session));
 curl_setopt( $req, CURLOPT_RETURNTRANSFER, true);

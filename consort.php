@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
 if (isset($_SESSION["user"]) && isset($_SESSION["session"])) {
 	header('Location: consort-game.php');
@@ -32,6 +34,7 @@ $sessions = json_decode($json, true);
 	</div>
 	<form action="consort-game.php" method="POST">
 <?php
+	asort($sessions);
 	for ($i = 0; $i < count($sessions); $i++) { 
 		if ($i == count($sessions) - 1) {?>
 			<input type="radio" value="<?= $i + 1 ?>" name="session" checked="checked"/><?= $sessions[$i]?>

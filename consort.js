@@ -84,15 +84,15 @@ function gameStateSetup() {
 		var height = parseFloat(jsonObj.Height) * _WIDTH;
 
 		canvas.width = Math.round(width);
-		canvas.height = Math.round(height) + 200;
+		canvas.height = Math.round(height) + 500;
 		canvas.style.display = "initial";
 		
 		fg.width = Math.round(width);
-		fg.height = Math.round(height) + 200;
+		fg.height = Math.round(height) + 500;
 		fg.style.display = "initial";		
 
 		line.width = Math.round(width);
-		line.height = Math.round(height) + 200;
+		line.height = Math.round(height) + 500;
 		line.style.display = "initial";		
 		
 
